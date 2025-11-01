@@ -1,0 +1,62 @@
+{
+  "mcpServers": {
+    "backlog-api": {
+      "url": "http://localhost:58080",
+      "description": "Backlog API Documentation MCP Server",
+      "transport": "http",
+      "tools": [
+        {
+          "name": "search_backlog_api",
+          "description": "Search Backlog API documentation",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "query": {
+                "type": "string",
+                "description": "Search query (endpoint name, function name, etc.)"
+              },
+              "category": {
+                "type": "string",
+                "description": "Category filter (optional): authentication, endpoints, errors, sdks",
+                "enum": ["authentication", "endpoints", "errors", "sdks"]
+              }
+            },
+            "required": ["query"]
+          }
+        },
+        {
+          "name": "get_api_spec",
+          "description": "Get detailed specification of a specific API",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "endpoint": {
+                "type": "string",
+                "description": "API endpoint (e.g., GET /api/v2/issues)"
+              }
+            },
+            "required": ["endpoint"]
+          }
+        },
+        {
+          "name": "list_api_categories",
+          "description": "Get list of API categories"
+        },
+        {
+          "name": "get_error_info",
+          "description": "Get error code information",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "error_code": {
+                "type": "string",
+                "description": "Error code (e.g., 40001)"
+              }
+            },
+            "required": ["error_code"]
+          }
+        }
+      ]
+    }
+  }
+}

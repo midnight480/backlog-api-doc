@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "backlog-api": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "backlog-api-mcp",
+        "python",
+        "/app/mcp-server-stdio.py"
+      ],
+      "env": {}
+    }
+  }
+}

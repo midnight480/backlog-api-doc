@@ -1,0 +1,19 @@
+services:
+  backlog-api-mcp:
+    build: .
+    container_name: backlog-api-mcp
+    ports:
+      - "58080:58080"
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    environment:
+      - OUTPUT_DIR=/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:58080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

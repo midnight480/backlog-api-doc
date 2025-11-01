@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "backlog-api": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "backlog-api-mcp",
+        "python",
+        "-c",
+        "import sys; import json; import httpx; req = json.load(sys.stdin); client = httpx.Client(); response = client.post(f'http://localhost:58080/mcp/{req[\"method\"]}', json=req.get('params', {})); print(json.dumps(json.loads(response.text)))"
+      ],
+      "env": {}
+    }
+  }
+}
