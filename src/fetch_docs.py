@@ -1,18 +1,29 @@
-"""Backlog APIドキュメント取得モジュール"""
+"""Backlog APIドキュメント取得モジュール
+
+Backlog APIの公式ドキュメントを取得し、Markdownファイルとして保存する
+"""
 import asyncio
 import json
 import logging
-from pathlib import Path
-from typing import List, Dict, Optional
 from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
 from urllib.parse import quote
+
 import httpx
 from bs4 import BeautifulSoup
 
 from src.config import (
-    BASE_URL, OUTPUT_DIR, JINA_API_KEY, JINA_API_URL,
-    SCRAPING_DELAY, MAX_CONCURRENT_REQUESTS, REQUEST_TIMEOUT,
-    MAX_RETRIES, FORCE_REFRESH, PRIORITY_PAGES
+    BASE_URL,
+    FORCE_REFRESH,
+    JINA_API_KEY,
+    JINA_API_URL,
+    MAX_CONCURRENT_REQUESTS,
+    MAX_RETRIES,
+    OUTPUT_DIR,
+    PRIORITY_PAGES,
+    REQUEST_TIMEOUT,
+    SCRAPING_DELAY,
 )
 from src.utils.retry import retry_with_backoff
 from src.utils.markdown import html_to_markdown, add_frontmatter

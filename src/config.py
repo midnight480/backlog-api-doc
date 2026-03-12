@@ -1,6 +1,10 @@
-"""設定管理モジュール"""
+"""設定管理モジュール
+
+アプリケーションの設定値を管理し、環境変数から設定を読み込む
+"""
 import os
 from pathlib import Path
+
 from dotenv import load_dotenv
 
 # .envファイルの読み込み
@@ -58,10 +62,16 @@ for subdir in DOCS_STRUCTURE.values():
     (OUTPUT_DIR / subdir).mkdir(parents=True, exist_ok=True)
 
 
-def validate_config():
-    """設定の妥当性チェック"""
+def validate_config() -> bool:
+    """設定の妥当性チェック
+    
+    Returns:
+        bool: 設定が有効な場合True
+        
+    Raises:
+        ValueError: 必須設定が不足している場合
+    """
     if not JINA_API_KEY or JINA_API_KEY == "your_jina_api_key_here":
-        raise ValueError(
-            "JINA_API_KEY is not set. Please set it in .env file."
-        )
+        msg = "JINA_API_KEY is not set. Please set it in .env file."
+        raise ValueError(msg)
     return True

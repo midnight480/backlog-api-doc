@@ -1,40 +1,54 @@
-"""MCPサーバー実装"""
+"""MCPサーバー実装
+
+Backlog API MCP Server - Model Context Protocol server for Backlog API documentation
+"""
 import asyncio
 import json
 import logging
 import re
-from pathlib import Path
-from typing import List, Dict, Optional
 from contextlib import asynccontextmanager
+from pathlib import Path
+from typing import Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from src.config import (
-    OUTPUT_DIR, FORCE_REFRESH, validate_config, MCP_PORT, MCP_HOST
+    FORCE_REFRESH,
+    MCP_HOST,
+    MCP_PORT,
+    OUTPUT_DIR,
+    validate_config,
 )
 from src.fetch_docs import fetch_documentation
 
 # ロギング設定
 logging.basicConfig(
     level=logging.INFO,
-    format='[%(levelname)s] %(message)s'
+    format="[%(levelname)s] %(message)s"
 )
 logger = logging.getLogger(__name__)
 
 # グローバル状態
-fetch_status = {
+fetch_status: Dict[str, bool | int] = {
     "initialized": False,
     "fetching": False,
     "total_pages": 0,
-    "available_pages": 0
+    "available_pages": 0,
 }
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """アプリケーションのライフサイクル管理"""
+    """アプリケーションのライフサイクル管理
+    
+    Args:
+        app: FastAPIアプリケーションインスタンス
+        
+    Yields:
+        None: アプリケーション実行中
+    """
     global fetch_status
     
     # 起動時の処理
@@ -43,7 +57,7 @@ async def lifespan(app: FastAPI):
     try:
         validate_config()
     except ValueError as e:
-        logger.error(f"Configuration error: {e}")
+        logger.error("Configuration error: %s", e)
         logger.error("Please check your .env file and set JINA_API_KEY")
         raise
     
